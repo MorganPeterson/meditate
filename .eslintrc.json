@@ -2,8 +2,13 @@
   "extends": ["airbnb-base", "airbnb-typescript/base"],
   "plugins": ["import", "prettier"],
   "rules": {
-    "prefer-default-export": false
+    "import/prefer-default-export": "off"
   },
+  "ignorePatterns": [
+    "*.test.*",
+    "*.d.ts",
+    "build/**/*"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json"
   }

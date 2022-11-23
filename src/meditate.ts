@@ -8,7 +8,7 @@ import {
 
 import { randomPrompt } from './prompts';
 import { fetchEnv } from './env';
-import config from './config';
+import { config } from './config';
 
 // eslint-disable-next-line import/prefer-default-export
 export class Meditate {
@@ -45,12 +45,14 @@ export class Meditate {
   }
 
   buildPrompt() {
+    this.logger.info('Building random prompt');
     const [prompt, commitMsg] = randomPrompt();
     this.prompt = prompt;
     this.commitMsg = commitMsg;
   }
 
   buildRequest() {
+    this.logger.info('Building completion request');
     this.request = { ...config, prompt: this.prompt };
     if (!this.request.prompt) {
       this.logger.error('No prompt provided');
@@ -58,21 +60,29 @@ export class Meditate {
   }
 
   writeStory(story: string) {
-      const datePrefix = ((new Date()).toISOString()).slice(0, 10);
-      const dirName = join(__dirname, 'stories');
-      const fileName = join(dirName, `${datePrefix} - ${this.commitMsg}.md`);
+    const datePrefix = ((new Date()).toISOString()).slice(0, 10);
+    const dirName = join(__dirname, 'stories');
+    const fileName = join(dirName, `${datePrefix} - ${this.commitMsg}.md`);
 
-      try {
-        mkdirSync(dirName, { recursive: true });
-      } catch (err) {
-        this.logger.error(err);
-        return;
-      }
+    try {
+      mkdirSync(dirName, { recursive: true });
+    } catch (err) {
+      this.logger.error(err);
+      return;
+    }
 
-      writeFile(fileName, story, (err) => this.logger.error(err));
+    writeFile(fileName, story, (err) => this.logger.error(err));
   }
 
   async createCompletion() {
-    this.data = await this.openAI.createCompletion(this.request)
+    const response = await this.openAI.createCompletion(this.request);
+
+    if (response.status === 200) {
+      this.logger.info(`${response.status} - ${response.statusText}`);
+      this.data = response.data;
+    } else {
+      this.logger.error(`${response.status} - ${response.statusText}`);
+      this.data = response.data;
+    }
   }
 }

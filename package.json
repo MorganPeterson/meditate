@@ -45,11 +45,18 @@
     "start": "node meditate.mjs"
   },
   "ava": {
-    "extensions": [
-      "ts"
+    "verbose": true,
+    "extensions": {
+      "ts": "commonjs"
+    },
+    "files": [
+      "src/__tests__/**/*"
     ],
+    "concurrency": 4,
     "require": [
       "ts-node/register"
+    ],
+    "nodeArguments": [
     ]
   }
 }

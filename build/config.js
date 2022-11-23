@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const config = {
+exports.config = void 0;
+exports.config = {
     model: 'text-davinci-002',
     max_tokens: 2048,
     temperature: 1,
@@ -15,4 +16,3 @@ const config = {
     best_of: 1,
     logit_bias: {},
 };
-exports.default = config;

@@ -1,6 +1,6 @@
 import { CreateCompletionRequest } from 'openai';
 
-const config: CreateCompletionRequest = {
+export const config: CreateCompletionRequest = {
   model: 'text-davinci-002',
   max_tokens: 2048,
   temperature: 1,
@@ -15,5 +15,3 @@ const config: CreateCompletionRequest = {
   best_of: 1,
   logit_bias: {},
 };
-
-export default config;

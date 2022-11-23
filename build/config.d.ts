@@ -1,3 +1,2 @@
 import { CreateCompletionRequest } from 'openai';
-declare const config: CreateCompletionRequest;
-export default config;
+export declare const config: CreateCompletionRequest;

@@ -5,8 +5,11 @@ export declare class Meditate {
     prompt: string;
     commitMsg: string;
     openAI: OpenAIApi;
-    payload: CreateCompletionRequest;
+    request: CreateCompletionRequest;
+    data: any;
     constructor();
-    createPayload(): void;
+    buildPrompt(): void;
+    buildRequest(): void;
+    writeStory(story: string): void;
     createCompletion(): Promise<void>;
 }
