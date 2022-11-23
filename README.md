@@ -6,7 +6,7 @@ A NodeJS script that uses OpenAI Completion to create prose.
 
 ## Credit
 
-This project was originally a fork of [](), but all of the original code has been removed and this is an original work.
+This project was originally a fork of [eternal-recurrence](https://github.com/DomosHaidou/eternal-recurrence), but all of the original code has been removed and this is an original work inspired by it.
 
 
 ## Usage
