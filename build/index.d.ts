@@ -1,1 +1,0 @@
-export { Meditate } from './meditate';
