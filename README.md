@@ -1,10 +1,12 @@
 # Meditate
 
-An experiment in generative creative writing.
-
 ## About
 
+A NodeJS script that uses OpenAI Completion to create prose.
 
+## Credit
+
+This project was originally a fork of [](), but all of the original code has been removed and this is an original work.
 
 
 ## Usage
@@ -27,7 +29,8 @@ The `config.ts` has a good set of defaults, but any changes you want to make tha
 
 ### Build Javascript files
 
-Create the dist directory containing the Javascript files
+Create the build directory containing the Javascript files
+
 ```sh
 $ npm run build
 ```
@@ -35,11 +38,10 @@ $ npm run build
 
 ### Run the executable
 
-Run `run.cjs` to fetch text. Will write out to stdio.
+Run `meditate.mjs` to fetch text.
 
 ```sh
 $ npm run start
 # or
 $ node meditate.mjs
 ```
-
