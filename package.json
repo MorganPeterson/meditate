@@ -1,0 +1,55 @@
+{
+  "name": "meditate",
+  "description": "generative creative writing via OpenAI",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "author": {
+    "name": "Morgan Peterson",
+    "email": "lastyearsmodel@gmail.com",
+    "url": "https://github.com/MorganPeterson"
+  },
+  "bugs": {
+    "url": "https://github.com/MorganPeterson/meditate/issues"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "openai": "^3.0.0",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "@ava/typescript": "^3.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "ava": "^5.1.0",
+    "eslint": "^8.28.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.3"
+  },
+  "homepage": "https://github.com/MorganPeterson/meditate#readme",
+  "license": "MIT",
+  "main": "build/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MorganPeterson/meditate.git"
+  },
+  "scripts": {
+    "build": "rimraf ./build && tsc --build",
+    "clean": "tsc --build --clean",
+    "test": "ava",
+    "lint": "eslint ./src",
+    "start": "node meditate.mjs"
+  },
+  "ava": {
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ]
+  }
+}

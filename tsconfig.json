@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "rootDir": "./src",
+        "outDir": "./build",
+        "module": "NodeNext",
+        "target": "es2015",
+        "declaration": true,
+        "strict": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node"
+    },
+    "exclude": [
+        "node_modules",
+        "build",
+        "src/*.test.ts"
+    ]
+}
