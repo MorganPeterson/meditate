@@ -1,16 +1,16 @@
-// adapted from https://github.com/austenstone/openai-completion-action/blob/4ceec96fe77a0734567849606910f7d7b5723642/src/context.ts
 import { join } from 'path';
-import { Configuration, CreateCompletionRequest, OpenAIApi } from 'openai';
+import {
+  Configuration, CreateCompletionRequest, CreateCompletionResponse, OpenAIApi,
+} from 'openai';
 import { writeFile, mkdirSync } from 'fs';
 import {
   Logger, createLogger, transports, format,
 } from 'winston';
 
-import { randomPrompt } from './prompts';
+import { randomPrompt, makeCommitMsg } from './prompts';
 import { fetchEnv } from './env';
 import { config } from './config';
 
-// eslint-disable-next-line import/prefer-default-export
 export class Meditate {
   logger: Logger;
 
@@ -22,7 +22,7 @@ export class Meditate {
 
   request: CreateCompletionRequest;
 
-  data: any;
+  data: CreateCompletionResponse | undefined;
 
   constructor() {
     this.logger = createLogger({
@@ -44,25 +44,23 @@ export class Meditate {
     this.request = {} as CreateCompletionRequest;
   }
 
-  buildPrompt() {
-    this.logger.info('Building random prompt');
-    const [prompt, commitMsg] = randomPrompt();
-    this.prompt = prompt;
-    this.commitMsg = commitMsg;
-  }
-
-  buildRequest() {
-    this.logger.info('Building completion request');
+  private buildRequest() {
     this.request = { ...config, prompt: this.prompt };
     if (!this.request.prompt) {
       this.logger.error('No prompt provided');
     }
   }
 
-  writeStory(story: string) {
+  writeStory() {
+    const story = this.data?.choices?.[0]?.text;
+
+    if (!story) return;
+
+    const storyToWrite = `${this.commitMsg}\n\n${this.prompt}${story}`;
+
     const datePrefix = ((new Date()).toISOString()).slice(0, 10);
-    const dirName = join(__dirname, 'stories');
-    const fileName = join(dirName, `${datePrefix} - ${this.commitMsg}.md`);
+    const dirName = join(process.cwd(), 'stories');
+    const fileName = join(dirName, `${datePrefix} - ${this.commitMsg}.txt`);
 
     try {
       mkdirSync(dirName, { recursive: true });
@@ -71,18 +69,37 @@ export class Meditate {
       return;
     }
 
-    writeFile(fileName, story, (err) => this.logger.error(err));
+    writeFile(fileName, storyToWrite, (err) => this.logger.error(err));
   }
 
-  async createCompletion() {
+  async create(prompt: string): Promise<string | undefined> {
+    this.prompt = prompt;
+    this.commitMsg = makeCommitMsg(prompt);
+
+    const result = await this.createCompletion();
+
+    return result;
+  }
+
+  async createRandom(): Promise<string | undefined> {
+    const [prompt, commitMsg] = randomPrompt();
+    this.prompt = prompt;
+    this.commitMsg = commitMsg;
+    const result = await this.createCompletion();
+    return result;
+  }
+
+  async createCompletion(): Promise<string | undefined> {
+    this.buildRequest();
     const response = await this.openAI.createCompletion(this.request);
 
     if (response.status === 200) {
       this.logger.info(`${response.status} - ${response.statusText}`);
-      this.data = response.data;
     } else {
       this.logger.error(`${response.status} - ${response.statusText}`);
-      this.data = response.data;
     }
+
+    this.data = response.data;
+    return response.data?.choices?.[0]?.text;
   }
 }

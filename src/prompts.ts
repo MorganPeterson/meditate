@@ -93,6 +93,8 @@ const authors = [
 
 const oneOf = (arr: string[]): string => arr[Math.floor(Math.random() * arr.length)];
 
+export const makeCommitMsg = (msg: string) => msg.charAt(0).toUpperCase() + msg.slice(1);
+
 export const randomPrompt = (): string[] => {
   const medium = oneOf(mediums);
   const prep = oneOf(prepositions);
@@ -102,6 +104,6 @@ export const randomPrompt = (): string[] => {
   const message = `${medium} ${prep} ${subject} ${relation} ${author}`;
 
   const prompt = `Please write an original ${message}.`;
-  const commitMsg = message.charAt(0).toUpperCase() + message.slice(1);
+  const commitMsg = makeCommitMsg(message);
   return [prompt, commitMsg];
 };

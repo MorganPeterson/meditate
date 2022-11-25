@@ -2,8 +2,8 @@ import { Meditate } from './build/index.js'
 
 const m = new Meditate()
 
-m.buildPrompt()
-m.buildRequest()
-const _ = await m.createCompletion()
+const story = await m.createRandom()
 
-console.log(m.data)
+console.log(story)
+
+m.writeStory();
